@@ -149,7 +149,7 @@ this.endscreen();
   endscreen() {
     var notice = document.createElement("div");
     notice.className = "notice";
-    notice.innerHTML = "<div><p>This word was: <a href='https://duckduckgo.com/?q=definition%3A+" + this.word + "' target='_new'>" + this.word + "</a></p></div>";
+    notice.innerHTML = "<div><p>This word was: <a href='https://www.collinsdictionary.com/dictionary/english/" + this.word + "' target='_new'>" + this.word + "</a></p></div>";
     var kbd = document.getElementById("keyboard");
     var restart = document.createElement("button");
     restart.className="action";

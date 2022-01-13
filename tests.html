@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Test Suite</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.17.2.css">
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="https://code.jquery.com/qunit/qunit-2.17.2.js"></script>
+  <script>
+  //var WordCode = function() {};
+  //WordCode.clue = function() {};
+  class WordCode { 
+    constructor() {
+      this.words = [];
+      this.right = [];
+      this.close = [];
+      this.wrong = [];
+    }
+    clue(guess){
+      if(this.word.length != guess.length) {
+        return "Invalid Length";
+      }
+      if(!this.words.includes(guess)) {
+        return "Invalid Word"
+      }
+      var response = [];
+      for (var l=0; l<this.word.length; l++) {
+        if(guess[l] == this.word[l]) {
+          response.push(2);
+          this.right.push(guess[l]);
+        } else {
+          var lidx = this.word.indexOf(guess[l]);
+          if(lidx != -1) {
+            response.push(1);
+            this.close.push(guess[l]);
+          } else {
+            response.push(0);
+            this.wrong.push(guess[l]);
+          }          
+        }
+      }
+      return response;
+    };
+  };
+  x = {
+    'right':  [],
+    'wrong':  [],
+    'close':  [],
+    
+    'clue' : function(guess) {
+    },
+  };
+
+  QUnit.module('wordcode', function() {
+    QUnit.test('no letter right', function(assert) {
+      var game = new WordCode()
+      game.words = ["words", "meaty"];
+      game.word = "words"
+      assert.deepEqual(game.clue("meaty"), [0, 0, 0, 0, 0]);
+    });
+    QUnit.test('right wrong place', function(assert) {
+      var game = new WordCode()
+      game.words = ["words", "daily"];
+      game.word = "words"
+      assert.deepEqual(game.clue("daily"), [1, 0, 0, 0, 0]);
+    });
+    QUnit.test('right in right place', function(assert) {
+      var game = new WordCode()
+      game.word = "words"
+      game.words = ["words", "darts"];
+      assert.deepEqual(game.clue("darts"), [1, 0, 2, 0, 2]);
+    });
+    QUnit.test('too short word', function(assert) {
+      var game = new WordCode()
+      game.word = "words"
+      assert.deepEqual(game.clue("fish"), "Invalid Length");
+    });
+    QUnit.test('not a word', function(assert) {
+      var game = new WordCode()
+      game.words = ["words"]
+      game.word = "words"
+      assert.deepEqual(game.clue("wible"), "Invalid Word");
+    });
+    QUnit.test('has guessed letters', function(assert) {
+      var game = new WordCode()
+      game.words = ["words", "drips"];
+      game.word = "words";
+      game.clue("drips");
+      assert.deepEqual(game.right, ['s']);
+      assert.deepEqual(game.wrong, ['i', 'p']);
+      assert.deepEqual(game.close, ['d', 'r']);
+    });
+  });
+</script>
+</body>

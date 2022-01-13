@@ -6,51 +6,8 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="https://code.jquery.com/qunit/qunit-2.17.2.js"></script>
+  <script src="./game.js"></script>
   <script>
-  //var WordCode = function() {};
-  //WordCode.clue = function() {};
-  class WordCode { 
-    constructor() {
-      this.words = [];
-      this.right = [];
-      this.close = [];
-      this.wrong = [];
-    }
-    clue(guess){
-      if(this.word.length != guess.length) {
-        return "Invalid Length";
-      }
-      if(!this.words.includes(guess)) {
-        return "Invalid Word"
-      }
-      var response = [];
-      for (var l=0; l<this.word.length; l++) {
-        if(guess[l] == this.word[l]) {
-          response.push(2);
-          this.right.push(guess[l]);
-        } else {
-          var lidx = this.word.indexOf(guess[l]);
-          if(lidx != -1) {
-            response.push(1);
-            this.close.push(guess[l]);
-          } else {
-            response.push(0);
-            this.wrong.push(guess[l]);
-          }          
-        }
-      }
-      return response;
-    };
-  };
-  x = {
-    'right':  [],
-    'wrong':  [],
-    'close':  [],
-    
-    'clue' : function(guess) {
-    },
-  };
-
   QUnit.module('wordcode', function() {
     QUnit.test('no letter right', function(assert) {
       var game = new WordCode()

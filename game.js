@@ -81,16 +81,56 @@ class WordCode {
     board.replaceChildren(guesses)
   };
 
-  handle_keyboard(e, _this) {
-    var letter = e.target.textContent;
-    if(_this.guessed[_this.current] == undefined) {
-      _this.guessed[_this.current] = "";
+  type(letter) {
+    if(this.guessed[this.current] == undefined) {
+      this.guessed[this.current] = "";
     }
 
-    if(_this.guessed[_this.current].length < 5) {
-      _this.guessed[_this.current] += letter;
+    if(this.guessed[this.current].length < 5) {
+      this.guessed[this.current] += letter;
     }
-    _this.render();
+    this.render();
+  }
+
+  backspace() {
+    if(this.guessed[this.current] == undefined) {
+      this.guessed[this.current] = "";
+    }
+    var len = this.guessed[this.current].length; 
+    if(len > 0) {
+      this.guessed[this.current] = this.guessed[this.current].slice(0, len-1);
+    }
+    this.render();
+  }
+
+  submit() {
+    if(this.guessed[this.current] == undefined) {
+      this.guessed[this.current] = "";
+    }
+    var word = this.guessed[this.current];
+    if(word.length < 5) {
+      return;
+    }
+    if(!this.validWord(word)) {
+      alert('Not Valid Word!');
+      return;
+    }
+    var score = this.clue(word);
+    this.scored.push(score);
+    this.current += 1
+    this.render();
+    if(word == this.word) {
+this.endscreen();
+    } else {
+      if(this.current == 6) {
+  this.endscreen();
+      }
+    }
+  }
+
+  handle_keyboard(e, _this) {
+    var letter = e.target.textContent;
+    _this.type(letter);
   }
 
   validWord(word) {
@@ -98,15 +138,13 @@ class WordCode {
   }
 
   handle_del(_this) {
-    if(_this.guessed[_this.current] == undefined) {
-      _this.guessed[_this.current] = "";
-    }
-    var len = _this.guessed[_this.current].length; 
-    if(len > 0) {
-      _this.guessed[_this.current] = _this.guessed[_this.current].slice(0, len-1);
-    }
-    _this.render();
+    _this.backspace();
   }
+
+  handle_sub(_this) {
+    _this.submit();
+  }
+
 
   endscreen() {
     var notice = document.createElement("div");
@@ -124,31 +162,6 @@ class WordCode {
 
   handle_rst(_this) {
     _this.endscreen();
-  }
-
-  handle_sub(_this) {
-    if(_this.guessed[_this.current] == undefined) {
-      _this.guessed[_this.current] = "";
-    }
-    var word = _this.guessed[_this.current];
-    if(word.length < 5) {
-      return;
-    }
-    if(!_this.validWord(word)) {
-      alert('Not Valid Word!');
-      return;
-    }
-    var score = this.clue(word);
-    _this.scored.push(score);
-    _this.current += 1
-    _this.render();
-    if(word == this.word) {
-_this.endscreen();
-    } else {
-      if(_this.current == 6) {
-  _this.endscreen();
-      }
-    }
   }
 
   render_keyboard() {
@@ -201,6 +214,19 @@ _this.endscreen();
     board.replaceChildren(keyboard)
   }
 
+  attachKeyboard() {
+    var _this = this;
+    document.addEventListener('keydown', function(e) {
+      if(e.key == "Backspace") {
+        _this.backspace();
+      } else if(e.key == "Enter") {
+        _this.submit();
+      } else if(e.key.length == 1 && e.key != ' ') {
+        _this.type(e.key);
+      }
+    });
+  }
+
   gameOver() {
     if(this.over) {
       this.endscreen();
@@ -214,6 +240,7 @@ _this.endscreen();
   }
 
   init() {
+    this.attachKeyboard();
     this.render();
   }
 };

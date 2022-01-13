@@ -1,10 +1,15 @@
 class WordCode { 
   constructor(words = []) {
+    var params = new URLSearchParams(window.location.search);
+    this.seed = params.get("seed");
     this.words = words;
     this.reset();
   }
 
   reset() {
+    if(this.idx != undefined) {
+      this.seed = this.idx;
+    }
     this.randomWord()
     this.over = false;
 
@@ -16,10 +21,15 @@ class WordCode {
     this.wrong = [];
   }
 
-  randomWord() {
+  randomWord(seed) {
     var len = this.words.length;
-    var idx = Math.floor(Math.random() * len);
-    this.word = this.words[idx];
+    if(this.seed == undefined) {
+      this.seed = Math.floor(Math.random() * len);
+    }
+    var r = Math.abs(Math.sin((this.seed)/len));
+    this.idx = Math.floor(r * len);
+    console.log(this.seed, this.idx);
+    this.word = this.words[this.idx];
   }
 
   clue(guess){
@@ -120,10 +130,10 @@ class WordCode {
     this.current += 1
     this.render();
     if(word == this.word) {
-this.endscreen();
+      this.endscreen();
     } else {
       if(this.current == 6) {
-  this.endscreen();
+        this.endscreen();
       }
     }
   }
@@ -154,9 +164,12 @@ this.endscreen();
     var restart = document.createElement("button");
     restart.className="action";
     restart.textContent = "Try a new puzzle";
+    var share = document.createElement("div");
+    share.innerHTML = "<a href='?seed="+ this.seed + "'>Puzzle Link</a>";
     var _this = this;
-    restart.addEventListener("click", function() { _this.reset(); _this.render(); });
+    restart.addEventListener("click", function() { _this.seed = _this.nothing; _this.reset(); _this.render(); });
     notice.appendChild(restart);
+    notice.appendChild(share);
     kbd.replaceChildren(notice);
   }
 

@@ -8,6 +8,7 @@
 
     #game table {
       margin: 1em auto;
+      margin-bottom: 0;
       border: 1px solid black;
       font-family: sans-serif;
       font-weight: bold;
@@ -207,6 +208,31 @@ class WordCode {
     _this.submit();
   }
 
+  clipboard() {
+    var url = window.location.protocol + window.location.hostname + window.location.pathname + '?seed=' + this.seed;
+    var score = this.current;
+    var txt = "CodeWord " + url + ": " + score + "/6\n";
+    for(var g=0; g<6; g++) {
+      var score = this.scored[g]
+
+      if(score != undefined) {
+        var row = "";
+        for(var c=0; c<5; c++) {
+          var cell = document.createElement("td");
+          if(score[c] == 0) {
+            row += "⬜️";
+          }else if(score[c] == 1) {
+            row += "🟨";
+          }else if(score[c] == 2) {
+            row += "🟩";
+          }
+        }
+        txt += row + '\n';
+      }
+    }
+    console.log(txt);
+  }
+
 
   endscreen() {
     var notice = document.createElement("div");
@@ -220,8 +246,15 @@ class WordCode {
     share.innerHTML = "<a href='?seed="+ this.seed + "'>Puzzle Link</a>";
     var _this = this;
     restart.addEventListener("click", function() { _this.seed = _this.nothing; _this.reset(); _this.render(); });
+    var copy = document.createElement("button");
+    copy.className="action";
+    copy.textContent = "Copy Sharable Link";
+    copy.addEventListener("click", function() {
+      _this.clipboard();
+    });
     notice.appendChild(restart);
     notice.appendChild(share);
+    notice.appendChild(copy);
     kbd.replaceChildren(notice);
   }
 

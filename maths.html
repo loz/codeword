@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Mathsle</title>
+<head>
+  <meta name = "viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
+  <style>
+    body { margin: 0 }
+
+    #game table {
+      margin: 1em auto;
+      margin-bottom: 0;
+      border: 1px solid black;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 2em;
+    }
+    #game table td {
+      display: inline-block;
+      text-transform: uppercase;
+      border: 1px solid black;
+      height: 1.5em;
+      width: 1.5em;
+      text-align: center;
+      vertical-align: middle;
+    }
+    #game table td.wrong { background-color: grey; color: white }
+    #game table td.close { background-color: #ed0; color: white }
+    #game table td.right { background-color: green; color: white }
+    #keyboard .notice { border: 2px solid black; padding: 1em; background-color: #eee;}
+    #keyboard .notice .sum { font-family: monospace; }
+    #keyboard { padding: 2em; text-align: center; }
+    #keyboard button {
+      color: black;
+      padding: 0;
+      font-size: 0.8em;
+      text-align: center;
+      margin: 0.25em;
+      width: 3.0em;
+      height: 3.0em;
+      text-transform: uppercase;
+      border: 1px solid black;
+      background-color: lightgrey;
+      font-weight: bold;
+    }
+    #keyboard button.action { width: auto; padding: 1em 2em; }
+    #keyboard button.right { background-color: green; color: white }
+    #keyboard button.wrong { background-color: grey; color: white }
+    #keyboard button.close { background-color: #ed0; color: white }
+  </style>
+</head>
+<body>
+<div id="game"></div>
+<div id="keyboard"></div>
+  <!-- GAME -->
+  <script src="./sumgame.js"></script>
+  <!-- END_GAME -->
+  <script>
+  // SUMS
+  var sums = ["1+1=1*1", "2+2=8/2"]
+  // END_SUMS
+  var game = new MathsCode(sums);
+  game.init();
+</script>
+</body>

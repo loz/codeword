@@ -177,6 +177,7 @@ class WordCode {
         txt += row + '\n';
       }
     }
+    navigator.clipboard.writeText(txt);
     console.log(txt);
   }
 

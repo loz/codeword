@@ -156,7 +156,7 @@ class WordCode {
   }
 
   clipboard() {
-    var url = window.location.protocol + window.location.hostname + window.location.pathname + '?seed=' + this.seed;
+    var url = window.location.protocol + '//' + window.location.hostname + window.location.pathname + '?seed=' + this.seed;
     var score = this.current;
     var txt = "CodeWord " + url + ": " + score + "/6\n";
     for(var g=0; g<6; g++) {

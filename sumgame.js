@@ -129,21 +129,40 @@ class MathsCode {
     if(!this.balanced(guess)) {
       return "Invalid Sum"
     }
-    var response = [];
+    var quota = {};
+    var used = {};
+    for (var ch in this.sum) {
+      var t = quota[this.sum[ch]] || 0;
+      t+=1;
+      quota[this.sum[ch]] = t;
+      used[this.sum[ch]] = 0;
+    }
+    var response = [-1, -1, -1, -1, -1, -1, -1];
+    //First do correct guess as priority
     for (var l=0; l<this.sum.length; l++) {
       if(guess[l] == this.sum[l]) {
-        response.push(2);
+        response[l] = 2;
         this.right.push(guess[l]);
-      } else {
-        var lidx = this.sum.indexOf(guess[l]);
-        if(lidx != -1) {
-          response.push(1);
-          this.close.push(guess[l]);
-        } else {
-          response.push(0);
-          this.wrong.push(guess[l]);
-        }          
+        used[guess[l]] += 1;
       }
+    }
+    //Now other answers
+    for (var l=0; l<this.sum.length; l++) {
+      var lidx = this.sum.indexOf(guess[l]);
+      if(guess[l] == this.sum[l]) {
+        //NOP - already handled
+      } else if(lidx != -1) {
+        if(used[guess[l]] < quota[guess[l]]) {
+          response[l] = 1;
+          used[guess[l]] += 1;
+        } else {
+          response[l] = 0;
+        }
+        this.close.push(guess[l]);
+      } else {
+        response[l] = 0;
+        this.wrong.push(guess[l]);
+      }          
     }
     return response;
   };

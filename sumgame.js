@@ -92,7 +92,6 @@ class MathsCode {
   }
 
   rpeval(tokens) {
-    console.log(tokens);
     var ops = {
      '+': function(a,b) { return a + b },
      '-': function(a,b) { return a - b },
@@ -116,12 +115,19 @@ class MathsCode {
     return stack[0];
   }
 
+  balanced(sum) {
+    var parts=sum.split('=');
+    var left = parts[0];
+    var right = parts[1];
+    return this.eval(left) == this.eval(right);
+  }
+
   clue(guess){
     if(this.sum.length != guess.length) {
       return "Invalid Length";
     }
-    if(!this.sums.includes(guess)) {
-      return "Unknown Sum"
+    if(!this.balanced(guess)) {
+      return "Invalid Sum"
     }
     var response = [];
     for (var l=0; l<this.sum.length; l++) {
@@ -246,7 +252,7 @@ class MathsCode {
   }
 
   validSum(sum) {
-    return self.sums.includes(sum);
+    return this.balanced(sum);
   }
 
   handle_del(_this) {

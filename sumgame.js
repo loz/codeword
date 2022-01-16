@@ -361,12 +361,22 @@ class MathsCode {
         var kbtn = document.createElement("button");
         kbtn.addEventListener('click', function(e) { _this.handle_keyboard(e, _this)} )
         var letter = keys[row][k];
+        var mletter = letter;
+        if(letter == '÷') {
+          mletter = '/';
+        } else if(letter == '×') {
+          mletter = '*';
+        } else if(letter == 'x²') {
+          mletter = 'Q';
+        } else if(letter == '√') {
+          mletter = 'R';
+        }
         kbtn.textContent = letter;
-        if(this.wrong.includes(letter)) {
+        if(this.wrong.includes(mletter)) {
           kbtn.className = 'wrong';
-        } else if (this.right.includes(letter)) {
+        } else if (this.right.includes(mletter)) {
           kbtn.className = 'right';
-        } else if (this.close.includes(letter)) {
+        } else if (this.close.includes(mletter)) {
           kbtn.className = 'close';
         }
         krow.appendChild(kbtn);

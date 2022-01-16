@@ -32,6 +32,90 @@ class MathsCode {
     this.sum = this.sums[this.idx];
   }
 
+  fact(n) {
+    if(n <= 1) {
+      return 1;
+    } else {
+      return n * this.fact(n-1);
+    }
+  }
+
+  eval(str) {
+    var pres = {
+      'R':2,
+      '*':1,
+      '/':1,
+      '+':0,
+      '-':0
+    };
+    var stack = [];
+    var ops = [];
+    var syms = str.split("");
+    var cur = "";
+    for(var i in syms) {
+      var s = syms[i];
+      if(s == 'R') {
+        ops.push(s);
+      } else if(s == '+' || s == '-' || s == '*' || s == '/') {
+        if(cur != "") {
+          stack.push(cur*1);
+        }
+        if(ops.length > 0) {
+          var op = ops.pop();
+          if(pres[op] >= pres[s]) {
+            stack.push(op);
+          } else {
+            ops.push(op);
+          }
+        }
+        ops.push(s);
+        cur = "";
+      } else if (s == '!') {
+        stack.push(this.fact(cur*1));
+        cur = "";
+      } else if (s == 'Q') {
+        var n = cur * 1;
+        stack.push(n*n);
+        cur = "";
+      } else {
+        cur += s;
+      }
+    }
+    if(cur != "") {
+      stack.push(cur*1);
+    }
+
+    while(ops.length > 0) {
+      stack.push(ops.pop());
+    }
+    return this.rpeval(stack);
+  }
+
+  rpeval(tokens) {
+    console.log(tokens);
+    var ops = {
+     '+': function(a,b) { return a + b },
+     '-': function(a,b) { return a - b },
+     '*': function(a,b) { return a * b },
+     '/': function(a,b) { return a / b },
+    };
+    var stack = []
+    for(var t in tokens) {
+      var token = tokens[t];
+      if(token == 'R') {
+        var left = stack.pop();
+        stack.push(Math.sqrt(left));
+      } else if(token == '+' || token == '-' || token == '*' || token == '/') {
+        var right = stack.pop()
+        var left = stack.pop();
+        stack.push(ops[token](left, right));
+      } else {
+        stack.push(token);
+      }
+    }
+    return stack[0];
+  }
+
   clue(guess){
     if(this.sum.length != guess.length) {
       return "Invalid Length";

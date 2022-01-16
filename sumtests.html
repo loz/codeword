@@ -42,6 +42,37 @@
       assert.deepEqual(game.wrong, ['+', '4', '7', '-', '0']);
       assert.deepEqual(game.close, ['3']);
     });
+    QUnit.test('evaluates addition', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('1+2+3'), 6);
+    });
+
+    QUnit.test('evaluates subtraction', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('1+2-3'), 0);
+    });
+    QUnit.test('evaluates multiplication', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('1*2+3'), 5);
+      assert.equal(game.eval('1+2*3'), 7);
+    });
+    QUnit.test('evaluates division', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('6/2+1'), 4);
+      assert.equal(game.eval('2*12/4'), 6);
+    });
+    QUnit.test('evaluates factorial', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('3*4!'), 72);
+    });
+    QUnit.test('evaluates square', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('4Q/2'), 8);
+    });
+    QUnit.test('evaluates root', function(assert) {
+      var game = new MathsCode()
+      assert.equal(game.eval('3*R81'), 27);
+    });
   });
 </script>
 </body>

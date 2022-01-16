@@ -5,10 +5,24 @@
   <meta name = "viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
   <style>
     body { margin: 0 }
+    #help {
+      margin: 0 auto;
+      width: 20em;
+    }
 
+    #helpmessage {
+      position: absolute;
+      width: 20em;
+      font-family: sans-serif;
+      border: 1px solid black;
+      padding: 0.25em;
+      background-color: lightgrey;
+    }
+    #helpmessage.hidden { display: none; }
+    #helpmessage p { margin: 0.5em 0; }
+    #helpmessage li { font-family: monospace; }
     #game table {
-      margin: 1em auto;
-      margin-bottom: 0;
+      margin: 0 auto;
       border: 1px solid black;
       font-family: sans-serif;
       font-weight: bold;
@@ -49,6 +63,29 @@
   </style>
 </head>
 <body>
+<div id="help">
+  <p><a href='#' onclick='showhelp()'>help</a></p> 
+  <div onclick='hidehelp()' id="helpmessage" class="hidden">
+    <p><b>Mathsle</b></p>
+    <p>Solve the puzzle by entering the correct <i>balanced</i> equation.</p>
+    <p>The equation must be exactly 7 symbols long and be mathematically correct.</p>
+    <p>Any valid equation may be guessed, but for simplicity no answer contains the
+    same expression on both sides (e.g <code>1+2=1+2</code> is not an answer) as this is considered dull</p>
+    <p><b>Operator Precedence</b></p>
+    <p><code>!, ², √ then ×, ÷ then +, -</code></p>
+    <p><b>Examples</b></p>
+    <ul>
+      <li>√9=3*1!</li>
+      <li>1+2+3=6</li>
+      <li>18/3=3!</li>
+    </ul>
+    <p><b>Keyboard</b></p>
+    <p><code>Q</code> can be used to type <code>²</code></p>
+    <p><code>R</code> can be used to type <code>√</code></p>
+    <p><code>/</code> can be used to type <code>÷</code></p>
+    <p><code>*</code> can be used to type <code>×</code></p>
+  </div>
+</div>
 <div id="game"></div>
 <div id="keyboard"></div>
   <!-- GAME -->
@@ -58,6 +95,15 @@
   // SUMS
   var sums = ["1+1=1*2", "2+2=8/2"]
   // END_SUMS
+  function showhelp() {
+    var message = document.getElementById('helpmessage');
+    message.className = '';
+  }
+  function hidehelp() {
+    var message = document.getElementById('helpmessage');
+    message.className = 'hidden';
+  }
+
   var game = new MathsCode(sums);
   game.init();
 </script>
